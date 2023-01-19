@@ -32,9 +32,9 @@ const RandomChar = () => {
 				<p className="randomchar__title">
 					Or choose another one
 				</p>
-				<a href="google.com" className="button button__main">
-					<div className="inner">homepage</div>
-				</a>
+				<button className="button button__main">
+					<div className="inner">try it</div>
+				</button>
 				<img src={mjolnir} alt="mjolnir" className="randomchar__decoration" />
 			</div>
 		</div>
