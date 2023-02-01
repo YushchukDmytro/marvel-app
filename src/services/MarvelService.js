@@ -28,12 +28,16 @@ class MarvelService {
 		// 	char.description = 'No description'
 		// }
 
+
 		return {
 			name: char.name,
 			descr: char.description ? char.description.length > 230 ? char.description.slice(0, 230) + '...' : char.description : 'No description',
 			thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
 			homepage: char.urls[0].url,
-			wiki: char.urls[1].url
+			wiki: char.urls[1].url,
+			id:char.id,
+			comics: char.comics.items.length < 10 ? char.comics.items : char.comics.items.slice(0, 10)
+			// comics: char.comics.items
 		}
 	}
 }

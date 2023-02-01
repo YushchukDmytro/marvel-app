@@ -40,7 +40,7 @@ class CharList extends Component {
 	}
 
 	renderItem(arr){
-		
+
 		const items = arr.map(item =>{
 			let imageStyle = {'objectFit': 'cover'};
 			if(item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'){
@@ -49,7 +49,8 @@ class CharList extends Component {
 
 			return(
 				<li className="char__item"
-					key={item.id}>
+					key={item.id}
+					onClick={() => this.props.onSelectedChar(item.id)}>
 					<img src={item.thumbnail} alt={item.name} style ={imageStyle}/>
 					<div className="char__name">{item.name}</div>
 				</li>
