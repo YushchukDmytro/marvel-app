@@ -13,23 +13,45 @@ class CharList extends Component {
 	state = {
 		charList: [],
 		loading: true,
-		error: false
+		error: false,
+		newCharItems: false,
+		offset: 210,
+		chareEnded: false
 	}
 
 	marvelService = new MarvelService();
 
 	componentDidMount(){
+		this.onRequest();
+	}
+
+	onRequest = (offset) => {
+		this.onCharLoading()
 		this.marvelService
-			.getAllCharacters()
+			.getAllCharacters(offset)
 			.then(this.onCharListLoaded)
 			.catch(this.onError)
 	}
 
-	onCharListLoaded = (charList) =>{
+	onCharLoading = () => {
 		this.setState({
-			charList,
-			loading: false
+			newCharItems: true
 		})
+	}
+
+	onCharListLoaded = (newCharList) => {
+		let ended = false;
+		if(newCharList.length < 9){
+			ended = true;
+		}
+
+		this.setState(({offset, charList})=>({
+				charList:[...charList, ...newCharList],
+				loading: false,
+				newCharItems: false,
+				offset: offset + 9,
+				chareEnded: ended
+		}))
 	}
 
 	onError = () =>{
@@ -43,7 +65,7 @@ class CharList extends Component {
 
 		const items = arr.map(item =>{
 			let imageStyle = {'objectFit': 'cover'};
-			if(item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'){
+			if(item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' || "http://i.annihil.us/u/prod/marvel/i/mg/f/60/4c002e0305708.gif"){
 				imageStyle = {'objectFit': 'contain'}
 			}
 
@@ -65,7 +87,7 @@ class CharList extends Component {
 	}
 
 	render(){
-		const{charList, loading, error}= this.state;
+		const{charList, loading, error, newCharItems, offset, chareEnded}= this.state;
 
 		const listItems = this.renderItem(charList)
 
@@ -78,7 +100,11 @@ class CharList extends Component {
 				{spinner}
 				{errorMessage}
 				{items}
-				<button className="button button__main button__long">
+				<button 
+					className="button button__main button__long"
+					disabled={newCharItems}
+					onClick={()=>this.onRequest(offset)}
+					style={{ "display" : chareEnded ? "none": "block"}}>
 					<div className="inner">load more</div>
 				</button>
 			</div>
